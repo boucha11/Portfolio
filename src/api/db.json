@@ -1,0 +1,51 @@
+{
+  "formSubmissions": [
+  {
+    "id": "1",
+    "nom": "Mohamed Yessin Bouchaala",
+    "email": "mohamedyessinb2@gmail.com",
+    "message": "Bonjour, je suis intéressé par une opportunité de stage PFE.",
+    "priorite": "haute",
+    "status": "new",
+    "createdAt": "2025-12-23T10:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "nom": "Sarah Ben Ali",
+    "email": "sarah.benali@example.com",
+    "message": "Pouvez-vous me contacter pour plus de détails ?",
+    "priorite": "moyenne",
+    "status": "new",
+    "createdAt": "2025-12-23T12:15:00.000Z"
+  },
+  {
+    "id": "3",
+    "nom": "Ahmed Trabelsi",
+    "email": "ahmed.trabelsi@example.com",
+    "message": "Merci pour votre retour rapide.",
+    "priorite": "basse",
+    "status": "read",
+    "createdAt": "2025-12-23T14:30:00.000Z"
+  }
+
+  ],
+  "projects": [
+  {
+      "id": 1,
+      "title": "Plateforme E-commerce",
+      "description": "Application mobile Flutter avec backend Spring Boot pour la gestion des produits, commandes et utilisateurs.",
+      "technologies": ["Flutter", "Spring Boot", "REST API", "MySQL"],
+      "github": "https://github.com/boucha11"
+    },
+    {
+      "id": 2,
+      "title": "Application Microservices",
+      "description": "Architecture microservices avec Spring Boot et communication via API REST.",
+      "technologies": ["Java", "Spring Boot", "Microservices"],
+      "github": "https://github.com/boucha11"
+    }
+],
+  "users": [
+    { "id": 1, "name": "mohamed yessin bouchaala", "email": "mohamedyessinb2@gmail.com", "role": "admin" }
+  ]
+}
