@@ -14,7 +14,6 @@ function ProjectDetails() {
         const res = await fetch(API_URL);
         const data = await res.json();
 
-        // Comparaison sécurisée (string / number)
         const foundProject = data.find(
           (p) => String(p.id) === String(id)
         );
@@ -22,6 +21,7 @@ function ProjectDetails() {
         setProject(foundProject || null);
       } catch (err) {
         console.error(err);
+        setProject(null);
       } finally {
         setLoading(false);
       }
@@ -31,16 +31,16 @@ function ProjectDetails() {
   }, [id]);
 
   if (loading) {
-    return <p className="text-center py-10">Chargement...</p>;
+    return <p className="text-center py-32 text-lg">Chargement...</p>;
   }
 
   if (!project) {
     return (
-      <div className="text-center py-16">
-        <p className="text-red-600 text-lg mb-4">Projet introuvable</p>
+      <div className="text-center py-32">
+        <p className="text-red-600 text-lg mb-6">Projet introuvable</p>
         <Link
           to="/projects"
-          className="inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-white"
+          className="inline-flex items-center rounded-xl bg-indigo-600 px-6 py-3 text-white font-semibold hover:bg-indigo-700 transition"
         >
           ← Retour aux projets
         </Link>
@@ -49,39 +49,97 @@ function ProjectDetails() {
   }
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-12">
-      <Link to="/projects" className="text-sm text-gray-500">
-        ← Retour à la liste
-      </Link>
+    <section className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-black px-6 py-24">
+      <div className="max-w-4xl mx-auto">
 
-      <div className="mt-6 bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="h-40 bg-gradient-to-r from-indigo-500 to-purple-600" />
+        {/* Back */}
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-2 mb-10 text-sm font-medium text-indigo-300 hover:text-white transition"
+        >
+          ← Retour aux projets
+        </Link>
 
-        <div className="p-6 space-y-6">
-          <h1 className="text-3xl font-bold text-gray-900">{project.title}</h1>
+        {/* Card */}
+        <article className="rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
 
-          {project.description && (
-            <p className="text-gray-700 leading-relaxed">{project.description}</p>
-          )}
+          {/* Header */}
+          <header className="p-10 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600">
+            <span className="inline-block mb-4 px-4 py-1 text-xs font-semibold tracking-wider text-white bg-white/20 rounded-full">
+              {project.category || "Projet"}
+            </span>
 
-          {project.technologies && project.technologies.length > 0 && (
-            <div>
-              <h2 className="text-sm font-semibold text-gray-900 mb-2">
-                Technologies utilisées
+            <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              {project.title}
+            </h1>
+
+            {project.year && (
+              <p className="mt-4 text-indigo-100 text-sm">
+                Année : {project.year}
+              </p>
+            )}
+          </header>
+
+          {/* Content */}
+          <div className="p-10 space-y-14">
+
+            {/* Description */}
+            <section>
+              <h2 className="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-4">
+                Description
               </h2>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-800"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+              <p className="text-indigo-100 leading-relaxed text-lg">
+                {project.description ||
+                  "Ce projet a été réalisé dans un cadre académique ou personnel, avec une attention particulière portée à la qualité du code, à l’architecture et à l’expérience utilisateur."}
+              </p>
+            </section>
+
+            {/* Technologies */}
+            {Array.isArray(project.technologies) && (
+              <section>
+                <h2 className="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-4">
+                  Technologies utilisées
+                </h2>
+                <div className="flex flex-wrap gap-3">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-4 py-2 rounded-xl bg-indigo-500/10 text-indigo-200 border border-indigo-500/20 text-sm font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Actions */}
+            <section className="flex flex-wrap gap-4 pt-6">
+              {project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-white font-semibold hover:bg-indigo-700 transition"
+                >
+                  Voir la démo
+                  →
+                </a>
+              )}
+
+              {project.repoUrl && (
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-indigo-200 font-semibold hover:bg-white/10 transition"
+                >
+                  Code source
+                </a>
+              )}
+            </section>
+          </div>
+        </article>
       </div>
     </section>
   );
