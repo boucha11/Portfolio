@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const API_URL = "https://694be681da5ddabf00358f9d.mockapi.io/projet";
 
@@ -7,6 +7,7 @@ function ProjectsList() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function load() {
@@ -27,6 +28,11 @@ function ProjectsList() {
     }
     load();
   }, []);
+
+  // Fonction pour naviguer vers les détails
+  const handleViewDetails = (projectId) => {
+    navigate(`/projects/${projectId}`);
+  };
 
   if (loading) return <p className="text-center py-32 text-lg">Chargement...</p>;
   if (error) return <p className="text-center py-32 text-red-600">{error}</p>;
@@ -85,30 +91,48 @@ function ProjectsList() {
 
                   <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
                     {project.description || 
-                      "Projet académique ou personnel axé sur la qualité du code et l’expérience utilisateur."
+                      "Projet académique ou personnel axé sur la qualité du code et l'expérience utilisateur."
                     }
                   </p>
 
+                  {/* SOLUTION 1: Link avec onClick */}
                   <Link
                     to={`/projects/${project.id}`}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleViewDetails(project.id);
+                    }}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition cursor-pointer"
                   >
                     Voir les détails
                     <span className="transition-transform group-hover:translate-x-1">
                       →
                     </span>
                   </Link>
+
+                  {/* SOLUTION 2: Bouton avec onClick (alternative) */}
+                  {/* 
+                  <button
+                    onClick={() => handleViewDetails(project.id)}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition cursor-pointer"
+                  >
+                    Voir les détails
+                    <span className="transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </button>
+                  */}
                 </div>
 
                 {/* Hover overlay */}
-                <div className="absolute inset-0 border-2 border-transparent group-hover:border-indigo-500 rounded-3xl transition" />
+                <div className="absolute inset-0 border-2 border-transparent group-hover:border-indigo-500 rounded-3xl transition pointer-events-none" />
               </article>
             );
           })}
         </div>
 
         {/* Empty state */}
-        {projects.length === 0 && (
+        {projects.length === 0 && !loading && (
           <p className="text-center mt-24 text-gray-500 text-lg">
             Aucun projet disponible pour le moment.
           </p>

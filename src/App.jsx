@@ -45,7 +45,7 @@ function App() {
 
       {/* Login admin */}
       <Route path="/admin/login" element={<AdminLogin />} />
-       
+
       {/* Admin protégé */}
       <Route
         path="/admin"

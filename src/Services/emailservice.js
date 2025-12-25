@@ -1,15 +1,18 @@
-import emailjs from '@emailjs/browser';
-
 export const sendEmail = async (formData) => {
-  try {
-    await emailjs.send(
-      'service_625ht2o',
-      'template_ptfopr1',
-      formData,
-      'OLUuBuw92fRDp7An9'
-    );
-    return { success: true };
-  } catch (error) {
-    return { success: false };
+  const FORM_ID = "YOUR_FORM_ID";
+
+  const response = await fetch(`https://formspree.io/f/${FORM_ID}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Erreur lors de l'envoi de l'email");
   }
+
+  return await response.json();
 };
